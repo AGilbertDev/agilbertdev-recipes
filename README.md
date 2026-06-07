@@ -10,7 +10,10 @@ It is the single source of truth for how I work with coding agents (Claude Code,
 
 | Skill | What it is |
 |---|---|
-| `agilbertdev-conventions` | Always-on conventions: git identity, writing voice, Nuxt-stack frontend rules, security, confidentiality. |
+| `agilbertdev-conventions` | Always-on personal conventions: git identity, writing voice, security, confidentiality. |
+| `frontend-conventions` | Nuxt/Vue: solution priority (Nuxt UI first), component patterns, icons. |
+| `backend-conventions` | Nuxt/Nitro: Turso + Drizzle, Zod validation, server routes, owner-managed auth, email. |
+| `styling-conventions` | Tailwind utility-first, mobile `dvh` rules, theming through semantic colors. |
 | `tutorial-mode` | An opt-in collaboration mode for learning-by-building: teach step by step, do not write the code for me. |
 
 **Third-party skills (downloaded from their sources at install time, not vendored here):**

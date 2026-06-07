@@ -3,6 +3,9 @@
   "description": "AGilbertDev recipe: a small SDK of agent instructions. Local instruction skills ship in this repo; third-party skills are downloaded from their upstream sources at install time.",
   "local": [
     "agilbertdev-conventions",
+    "frontend-conventions",
+    "backend-conventions",
+    "styling-conventions",
     "tutorial-mode"
   ],
   "download": [
