@@ -15,8 +15,13 @@ Always true in AGilbertDev personal projects, regardless of the task. Stack-spec
 - Humble, honest, direct. No corporate fluff. Never overclaim skills or results.
 - Write complete sentences, like a human. Never use a dash or a colon to separate or join clauses.
 - No em-dashes, no `---` dividers, no rhetorical setups like "The goal was simple".
-- French copy is Québécois, never français de France.
 - Prefer plain words and short, complete sentences.
+
+## Language (Québécois French)
+- All French copy is Québécois, never français de France.
+- Follow his usage. Write "dans mon temps libre" (not "sur mon temps libre"), "un stack" and "mon stack" as masculine (not "une stack" or "ma stack"), and "outils" (not "outillage").
+- Québécois colloquial fits his voice, for example "le fun à faire".
+- Write what he would actually say, never adjust toward France French.
 
 ## Security
 - Never read `.env` or secrets files. Do not print or echo their contents.
