@@ -1,38 +1,51 @@
 # agilbertdev-recipes
 
-My personal "recipes": a manifest of curated Agent Skills plus my own working conventions, shared across my own projects.
+A small SDK of agent instructions: my reusable conventions and a curated skill set, pulled into any of my projects like a package.
 
-Third-party skills are **downloaded from their upstream sources**, not copied into this repo. Only `agilbertdev-conventions` (my own content) lives here.
+It is the single source of truth for how I work with coding agents (Claude Code, and anything else that reads Agent Skills). Instead of re-explaining my preferences in every repo or copying a growing `AGENTS.md` around by hand, a project pulls this recipe and gets my conventions plus a tuned skill set in one command. Project repos then hold only their own project-specific facts.
 
-Personal projects only. Do not add this to client or work repos.
+## What's inside
 
-## What's in the recipe
+Two kinds of thing:
 
-| Skill | Source | How |
-|---|---|---|
-| `nuxt-ui` (official) | `nuxt/ui` @ `v4`, `skills/nuxt-ui` | git sparse-checkout |
-| `vue` | `antfu/skills` | `skills add` |
-| `vue-best-practices` | `antfu/skills` | `skills add` |
-| `nuxt` | `antfu/skills` | `skills add` |
-| `zod` | `pproenca/dot-skills` | `skills add` |
-| `bun` | `midudev/autoskills` | `skills add` |
-| `tailwind-css-patterns` | `giuseppe-trisciuoglio/developer-kit` | `skills add` |
-| `typescript-advanced-types` | `wshobson/agents` | `skills add` |
-| `accessibility` | `addyosmani/web-quality-skills` | `skills add` |
-| `seo` | `addyosmani/web-quality-skills` | `skills add` |
-| `frontend-design` | `anthropics/skills` | `skills add` |
-| `vue-debug-guides` | `hyf0/vue-skills` | `skills add` |
-| `agilbertdev-conventions` | this repo | symlinked from the submodule |
+**Instruction skills (mine, shipped here):**
 
-The machine-readable version is [`skills.manifest.json`](./skills.manifest.json).
+| Skill | What it is |
+|---|---|
+| `agilbertdev-conventions` | Always-on conventions: git identity, writing voice, Nuxt-stack frontend rules, security, confidentiality. |
+| `tutorial-mode` | An opt-in collaboration mode for learning-by-building: teach step by step, do not write the code for me. |
 
-## Add the recipe to a project
+**Third-party skills (downloaded from their sources, not vendored here):**
+
+| Skill | Source |
+|---|---|
+| `nuxt-ui` (official) | [`nuxt/ui`](https://github.com/nuxt/ui) `@v4`, `skills/nuxt-ui` |
+| `vue`, `vue-best-practices`, `nuxt` | [`antfu/skills`](https://github.com/antfu/skills) |
+| `zod` | [`pproenca/dot-skills`](https://github.com/pproenca/dot-skills) |
+| `bun` | [`midudev/autoskills`](https://github.com/midudev/autoskills) |
+| `tailwind-css-patterns` | [`giuseppe-trisciuoglio/developer-kit`](https://github.com/giuseppe-trisciuoglio/developer-kit) |
+| `typescript-advanced-types` | [`wshobson/agents`](https://github.com/wshobson/agents) |
+| `accessibility`, `seo` | [`addyosmani/web-quality-skills`](https://github.com/addyosmani/web-quality-skills) |
+| `frontend-design` | [`anthropics/skills`](https://github.com/anthropics/skills) |
+| `vue-debug-guides` | [`hyf0/vue-skills`](https://github.com/hyf0/vue-skills) |
+
+The machine-readable manifest is [`skills.manifest.json`](./skills.manifest.json).
+
+## Design choices
+
+1. **Third-party skills are downloaded from upstream, not vendored.** This repo stores which skills to use and where each lives, then pulls the real files from their source repos at install time. They stay current and credit stays with their authors.
+2. **Instructions travel as skills, not as copied docs.** Conventions and modes are modular, loadable units. The always-on conventions are separate from the opt-in tutorial mode.
+3. **Consumed as a git submodule, pinned per project.** A project records the exact recipe commit it uses, so it updates only when I bump it. It behaves like a versioned package and travels across machines with the clone.
+
+The skill list is tuned for my stack (Nuxt, Vue, Tailwind, Bun, Zod, TypeScript). Fork it and swap the manifest for yours.
+
+## Use it in a project
 
 ```bash
-# from the project root (personal projects only):
-git submodule add git@github.com:AGilbertDev/agilbertdev-recipes.git .recipes
-bash .recipes/bin/install            # downloads the skills above into .claude/skills
-echo ".claude/skills/" >> .gitignore  # downloaded + re-installable; keep out of git/Vercel
+# from the project root:
+git submodule add https://github.com/AGilbertDev/agilbertdev-recipes.git .recipes
+bash .recipes/bin/install              # links my instruction skills + downloads the rest
+echo ".claude/skills/" >> .gitignore   # downloaded and re-installable, kept out of git
 git add .recipes .gitignore && git commit -m "chore: add agilbertdev-recipes"
 ```
 
@@ -43,35 +56,15 @@ git submodule update --init
 bash .recipes/bin/install
 ```
 
-## Install the skills manually (no script)
-
-```bash
-npx skills add antfu/skills --skill vue vue-best-practices nuxt --agent claude-code
-npx skills add pproenca/dot-skills --skill zod --agent claude-code
-npx skills add midudev/autoskills --skill bun --agent claude-code
-npx skills add giuseppe-trisciuoglio/developer-kit --skill tailwind-css-patterns --agent claude-code
-npx skills add wshobson/agents --skill typescript-advanced-types --agent claude-code
-npx skills add addyosmani/web-quality-skills --skill accessibility seo --agent claude-code
-npx skills add hyf0/vue-skills --skill vue-debug-guides --agent claude-code
-npx skills add anthropics/skills --skill frontend-design --agent claude-code
-
-# official Nuxt UI skill (lives in a subdir, so fetch it directly):
-git clone --no-checkout --depth 1 --filter=blob:none --branch v4 https://github.com/nuxt/ui.git /tmp/ui
-git -C /tmp/ui sparse-checkout set --no-cone skills/nuxt-ui && git -C /tmp/ui checkout
-cp -r /tmp/ui/skills/nuxt-ui .claude/skills/nuxt-ui && rm -rf /tmp/ui
-```
+Every command the script runs is listed in [`bin/install`](./bin/install), if you prefer to do it by hand.
 
 ## Update
 
-The submodule pins which recipe version a project uses (manifest + conventions). Bump it when you want:
-
 ```bash
-git submodule update --remote .recipes && git add .recipes && git commit -m "chore: bump recipes"
+git submodule update --remote .recipes   # pull the latest recipe, then commit the bump
+npx skills update                         # refresh the downloaded third-party skills
 ```
 
-Third-party skills are versioned by the project's own `skills-lock.json` (written by the skills CLI). Refresh them with:
+## License
 
-```bash
-npx skills update          # all
-npx skills update vue      # one
-```
+MIT. See [LICENSE](./LICENSE).
