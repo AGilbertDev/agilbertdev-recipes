@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Install the AGilbertDev recipe into the current project.
+# Downloads third-party skills from their upstream sources and links the
+# local agilbertdev-conventions skill. Run from your project root:
+#
+#   bash .recipes/bin/install
+#
+# Re-runnable. Skills land in .claude/skills (gitignore that dir).
+set -euo pipefail
+
+RECIPE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PROJECT="$(pwd)"
+AGENT="claude-code"
+
+if [ "$RECIPE_DIR" = "$PROJECT" ]; then
+  echo "Run this from your PROJECT root, not from inside the recipe repo." >&2
+  exit 1
+fi
+
+mkdir -p "$PROJECT/.claude/skills"
+
+echo "==> Downloading third-party skills from upstream (skills CLI)"
+npx -y skills add antfu/skills                     --skill vue vue-best-practices nuxt --agent "$AGENT"
+npx -y skills add pproenca/dot-skills              --skill zod                         --agent "$AGENT"
+npx -y skills add midudev/autoskills               --skill bun                         --agent "$AGENT"
+npx -y skills add giuseppe-trisciuoglio/developer-kit --skill tailwind-css-patterns    --agent "$AGENT"
+npx -y skills add wshobson/agents                  --skill typescript-advanced-types   --agent "$AGENT"
+npx -y skills add addyosmani/web-quality-skills    --skill accessibility seo           --agent "$AGENT"
+npx -y skills add hyf0/vue-skills                  --skill vue-debug-guides            --agent "$AGENT"
+npx -y skills add anthropics/skills                --skill frontend-design             --agent "$AGENT"
+
+echo "==> Fetching official Nuxt UI skill (nuxt/ui @ v4, skills/nuxt-ui)"
+TMP="$(mktemp -d)"
+git clone --no-checkout --depth 1 --filter=blob:none --branch v4 https://github.com/nuxt/ui.git "$TMP/ui" >/dev/null 2>&1
+git -C "$TMP/ui" sparse-checkout set --no-cone skills/nuxt-ui >/dev/null
+git -C "$TMP/ui" checkout -q
+rm -rf "$PROJECT/.claude/skills/nuxt-ui"
+cp -r "$TMP/ui/skills/nuxt-ui" "$PROJECT/.claude/skills/nuxt-ui"
+rm -rf "$TMP"
+
+echo "==> Linking local agilbertdev-conventions skill from the submodule"
+ln -sfn "../../.recipes/skills/agilbertdev-conventions" "$PROJECT/.claude/skills/agilbertdev-conventions"
+
+echo "==> Done. Skills in .claude/skills:"
+ls "$PROJECT/.claude/skills"
+echo
+echo "Remember: add '.claude/skills/' to .gitignore (downloaded + re-installable)."
