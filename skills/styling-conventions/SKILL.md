@@ -9,7 +9,9 @@ description: AGilbertDev's styling conventions for Nuxt/Tailwind projects — ut
 - Utility-first. Avoid custom CSS files unless unavoidable.
 
 ## Typography
-- Always justify body paragraph text (`text-justify`), with `hyphens-auto` for clean edges. Applies to prose and descriptions, not to centered headings or short subtitles.
+- Always justify body paragraph text (`text-justify`).
+- Never hyphenate words. Use `hyphens-none` and never break a word with a hyphen anywhere on the site.
+- Applies to prose and descriptions, not to centered headings or short subtitles.
 
 ## Mobile responsive
 - Use `min-h-dvh`, not `min-h-screen`.
