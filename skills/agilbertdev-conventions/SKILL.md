@@ -13,8 +13,10 @@ Always true in AGilbertDev personal projects, regardless of the task. Stack-spec
 
 ## Writing voice (any prose: docs, blog, commit messages, UI copy, PR text)
 - Humble, honest, direct. No corporate fluff. Never overclaim skills or results.
-- No AI tells. Specifically: no em-dashes, no `---` horizontal-rule dividers, no rhetorical setups like "The goal was simple:". They are easy to spot.
-- Prefer plain words, short sentences, commas and parentheses over em-dashes.
+- Write complete sentences, like a human. Never use a dash or a colon to separate or join clauses.
+- No em-dashes, no `---` dividers, no rhetorical setups like "The goal was simple".
+- French copy is Québécois, never français de France.
+- Prefer plain words and short, complete sentences.
 
 ## Security
 - Never read `.env` or secrets files. Do not print or echo their contents.
