@@ -13,7 +13,8 @@ It is the single source of truth for how I work with coding agents (Claude Code,
 | `agilbertdev-conventions` | Always-on personal conventions: git identity, writing voice, security, confidentiality. |
 | `frontend-conventions` | Nuxt/Vue: solution priority (Nuxt UI first), component patterns, icons. |
 | `backend-conventions` | Nuxt/Nitro: Turso + Drizzle, Zod validation, server routes, owner-managed auth, email. |
-| `styling-conventions` | Tailwind utility-first, mobile `dvh` rules, theming through semantic colors. |
+| `styling-conventions` | Visual identity: Hanken Grotesk type, semantic-token theming, fluid `clamp()` sizing, dark mode, accessible Nuxt UI components. |
+| `new-project` | The playbook for bootstrapping a new project: scaffold the Nuxt app, wire in this recipe, set the Bun/ESLint/Prettier/husky/i18n baseline. |
 | `tutorial-mode` | An opt-in collaboration mode for learning-by-building: teach step by step, do not write the code for me. |
 
 **Third-party skills (downloaded from their sources at install time, not vendored here):**
@@ -46,7 +47,7 @@ The machine-readable manifest is [`skills.manifest.json`](./skills.manifest.json
 
 ## Install into a project
 
-Run from the project root:
+To scaffold a brand-new project from scratch (create the Nuxt app, then wire this in plus the shared tooling baseline), follow the `new-project` skill. To add the recipe to an existing project, run from the project root:
 
 ```bash
 git submodule add https://github.com/AGilbertDev/agilbertdev-recipes.git .recipes
@@ -55,7 +56,7 @@ bash .recipes/bin/install
 
 `bin/install` does two things:
 
-- Symlinks the local instruction skills (`agilbertdev-conventions`, `tutorial-mode`) from the submodule into `.claude/skills/`.
+- Symlinks every local instruction skill (the conventions, `new-project`, and `tutorial-mode`) from the submodule into `.claude/skills/`.
 - Downloads the third-party skills into `.claude/skills/` as real directories (via `npx skills add ...`), and fetches the official `nuxt-ui` skill from `nuxt/ui`. A `skills-lock.json` is written at the project root pinning the downloaded versions.
 
 Then ignore the generated files and commit the recipe wiring:
