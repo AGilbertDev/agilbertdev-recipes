@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 # PreToolUse(Bash) guard for personal repos.
 #
-# Blocks a `git commit` or `git push` made under an identity other than the
+# Blocks a `git commit` or `git push` made under a git user.name other than the
 # expected personal one. It reads the tool-call JSON from stdin and only acts
 # when the command looks like a commit or push. It fails open on anything it is
 # unsure about, so it never blocks unrelated work. Exit 2 is what blocks the
 # action and shows the message to Claude.
 #
-# Fork-friendly: override the expected identity with AGD_GIT_NAME and
-# AGD_GIT_EMAIL.
+# The check is on user.name, not email, so every personal email (a plain
+# address or a GitHub noreply) passes while a work identity does not.
+# Fork-friendly: override the expected name with AGD_GIT_NAME.
 set -uo pipefail
 
-expected_email="${AGD_GIT_EMAIL:-alexandre.gilbert.dev@gmail.com}"
 expected_name="${AGD_GIT_NAME:-AGilbertDev}"
 
 input="$(cat)"
@@ -22,14 +22,15 @@ case "$input" in
   *) exit 0 ;;
 esac
 
-email="$(git config user.email 2>/dev/null || true)"
+name="$(git config user.name 2>/dev/null || true)"
 
-# Unset identity is left to git and other guards. A matching identity is fine.
-if [ -n "$email" ] && [ "$email" != "$expected_email" ]; then
+# Unset name is left to git and other guards. A matching name is fine.
+if [ -n "$name" ] && [ "$name" != "$expected_name" ]; then
   {
-    echo "Blocked: git user.email is '$email', not the personal identity '$expected_email'."
+    echo "Blocked: git user.name is '$name', not the personal identity '$expected_name'."
     echo "This is a personal repo. Set the local identity, then retry:"
-    echo "  git config user.name \"$expected_name\" && git config user.email \"$expected_email\""
+    echo "  git config user.name \"$expected_name\""
+    echo "  git config user.email \"<your personal email>\""
   } >&2
   exit 2
 fi
