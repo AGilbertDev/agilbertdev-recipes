@@ -5,14 +5,14 @@ description: AGilbertDev's playbook for starting a new personal project. Scaffol
 
 # New project setup
 
-The ordered playbook for starting a new AGilbertDev personal project. It scaffolds the app, wires in the recipes, and sets the shared tooling baseline. Stack details live in `frontend-conventions`, `backend-conventions`, and `styling-conventions`, so follow those for the nuxt.config modules, theming, and the database layer.
+The ordered playbook for starting a new AGilbertDev personal project. It scaffolds the app, wires in the recipes, and sets the shared tooling baseline. Stack details live in `my-frontend-conventions`, `my-backend-conventions`, and `my-styling-conventions`, so follow those for the nuxt.config modules, theming, and the database layer.
 
 ## Stack baseline
 - Nuxt 4 with Vue 3 and vue-router. Bun is the package manager and the task runner.
-- The frontend is Nuxt UI v4, Tailwind v4, and `@nuxt/fonts`. Follow `frontend-conventions` and `styling-conventions`.
+- The frontend is Nuxt UI v4, Tailwind v4, and `@nuxt/fonts`. Follow `my-frontend-conventions` and `my-styling-conventions`.
 - Localization is `@nuxtjs/i18n` with Québécois French as the default locale and English second.
 - TypeScript across the whole project.
-- A backend, when the project needs one, follows `backend-conventions` (Turso libSQL with Drizzle, Zod, `nuxt-auth-utils` for owner-managed auth, Resend for email).
+- A backend, when the project needs one, follows `my-backend-conventions` (Turso libSQL with Drizzle, Zod, `nuxt-auth-utils` for owner-managed auth, Resend for email).
 - Deploy on Vercel with the personal identity.
 
 ## Steps
@@ -30,14 +30,14 @@ The ordered playbook for starting a new AGilbertDev personal project. It scaffol
    bun add @nuxt/ui @nuxt/fonts @nuxtjs/i18n
    bun add -D @nuxt/eslint eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-plugin-perfectionist husky lint-staged typescript
    ```
-   Register the modules in nuxt.config, then set up `main.css` and `app.config.ts` following `styling-conventions`.
+   Register the modules in nuxt.config, then set up `main.css` and `app.config.ts` following `my-styling-conventions`.
 
 3. Wire in the recipes, then ignore the generated skills.
    ```bash
    git submodule add https://github.com/AGilbertDev/agilbertdev-recipes.git .recipes
    bash .recipes/bin/install
    ```
-   `bin/install` symlinks the local instruction skills into `.claude/skills/` and downloads the third-party skills there as real folders, writing a `skills-lock.json` at the root.
+   `bin/install` symlinks the local skills into `.claude/skills/`, downloads the third-party skills there as real folders, merges the security baseline into `.claude/settings.json`, and wires the conventions core into your `CLAUDE.md`. It writes a `skills-lock.json` at the root.
 
 4. Add the tooling configs below (`.gitignore`, `.prettierrc`, `eslint.config.mjs`, the husky pre-commit, and the package.json scripts).
 
@@ -157,7 +157,7 @@ This repo uses the shared [agilbertdev-recipes](https://github.com/AGilbertDev/a
 git submodule update --init && bash .recipes/bin/install
 ```
 
-Conventions live in the `agilbertdev-conventions` skill (git identity, writing voice, security, confidentiality), with stack rules in `frontend-conventions`, `backend-conventions`, and `styling-conventions`.
+Personal conventions load from the always-loaded core (`@.recipes/CLAUDE.md`), with stack rules in the `my-frontend-conventions`, `my-backend-conventions`, and `my-styling-conventions`.
 
 ## Collaboration
 

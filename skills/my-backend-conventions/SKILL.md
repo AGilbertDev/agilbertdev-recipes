@@ -1,5 +1,5 @@
 ---
-name: backend-conventions
+name: my-backend-conventions
 description: AGilbertDev's backend conventions for personal Nuxt/Nitro projects — database, validation, server routes, auth, and email. Use when working on server routes, the database layer, schemas, or auth in a personal project. Starting defaults, adjust per project.
 ---
 

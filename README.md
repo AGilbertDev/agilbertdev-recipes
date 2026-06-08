@@ -6,16 +6,19 @@ It is the single source of truth for how I work with coding agents (Claude Code,
 
 ## What's inside
 
-**Instruction skills (mine, shipped here):**
+**Always-loaded core ([`CLAUDE.md`](./CLAUDE.md)):** my personal conventions (git identity, writing voice, Québécois French, security, confidentiality). Each project imports it from its own `CLAUDE.md`, so it loads every session. Claude Code only auto-loads `CLAUDE.md`, not `AGENTS.md`, which is why the core lives here and loads through an import.
+
+**Instruction skills (mine, shipped here, loaded on demand):**
 
 | Skill | What it is |
 |---|---|
-| `agilbertdev-conventions` | Always-on personal conventions: git identity, writing voice, security, confidentiality. |
-| `frontend-conventions` | Nuxt/Vue: solution priority (Nuxt UI first), component patterns, icons. |
-| `backend-conventions` | Nuxt/Nitro: Turso + Drizzle, Zod validation, server routes, owner-managed auth, email. |
-| `styling-conventions` | Visual identity: Hanken Grotesk type, semantic-token theming, fluid `clamp()` sizing, dark mode, accessible Nuxt UI components. |
+| `my-frontend-conventions` | Nuxt/Vue: solution priority (Nuxt UI first), component patterns, icons. |
+| `my-backend-conventions` | Nuxt/Nitro: Turso + Drizzle, Zod validation, server routes, owner-managed auth, email. |
+| `my-styling-conventions` | Visual identity: Hanken Grotesk type, semantic-token theming, fluid `clamp()` sizing, dark mode, accessible Nuxt UI components. |
 | `new-project` | The playbook for bootstrapping a new project: scaffold the Nuxt app, wire in this recipe, set the Bun/ESLint/Prettier/husky/i18n baseline. |
 | `tutorial-mode` | An opt-in collaboration mode for learning-by-building: teach step by step, do not write the code for me. |
+
+The `my-` prefix marks the skills I author. Everything without it is a framework or community skill, downloaded from upstream.
 
 **Third-party skills (downloaded from their sources at install time, not vendored here):**
 
@@ -36,8 +39,9 @@ The machine-readable manifest is [`skills.manifest.json`](./skills.manifest.json
 ## Design choices
 
 1. **Third-party skills are downloaded from upstream, not vendored.** This repo stores which skills to use and where each lives, then pulls the real files from their source repos at install time. They stay current and credit stays with their authors.
-2. **Instructions travel as skills, not as copied docs.** Conventions and modes are modular, loadable units. The always-on conventions are separate from the opt-in tutorial mode.
-3. **Consumed as a git submodule, pinned per project.** A project records the exact recipe commit it uses, so it updates only when I bump it. It behaves like a versioned package and travels across machines with the clone.
+2. **Always-on rules live in an imported core, task rules in on-demand skills.** Claude Code always loads `CLAUDE.md`, so the universal conventions go there (through an import) and are guaranteed every session. Stack rules stay as skills that load only when the task matches, so they cost nothing until needed.
+3. **Hard rules are enforced, not just stated.** A `settings.json` baseline denies reads of `.env` and secrets files, and a hook blocks a commit or push made under the wrong git identity. Instructions shape behavior, hooks guarantee it.
+4. **Consumed as a git submodule, pinned per project.** A project records the exact recipe commit it uses, so it updates only when I bump it. It behaves like a versioned package and travels across machines with the clone.
 
 ## Requirements
 
@@ -54,20 +58,22 @@ git submodule add https://github.com/AGilbertDev/agilbertdev-recipes.git .recipe
 bash .recipes/bin/install
 ```
 
-`bin/install` does two things:
+`bin/install` is re-runnable and does four things:
 
-- Symlinks every local instruction skill (the conventions, `new-project`, and `tutorial-mode`) from the submodule into `.claude/skills/`.
-- Downloads the third-party skills into `.claude/skills/` as real directories (via `npx skills add ...`), and fetches the official `nuxt-ui` skill from `nuxt/ui`. A `skills-lock.json` is written at the project root pinning the downloaded versions.
+- Symlinks every local skill (the `my-*` conventions, `new-project`, `tutorial-mode`) from the submodule into `.claude/skills/`, pruning links for any renamed or retired skill.
+- Downloads the third-party skills into `.claude/skills/` as real directories (via `npx skills add ...`), and fetches the official `nuxt-ui` skill from `nuxt/ui`. A `skills-lock.json` pins the downloaded versions.
+- Merges the security baseline (`settings.base.json`) into `.claude/settings.json`.
+- Wires the conventions core into the project's `CLAUDE.md`, creating it if needed and importing `@.recipes/CLAUDE.md` and `@AGENTS.md`.
 
 Then ignore the generated files and commit the recipe wiring:
 
 ```bash
 printf '\n# agent skills (downloaded, re-installable from .recipes)\n.claude/skills/\nskills-lock.json\n' >> .gitignore
-git add .gitmodules .recipes .gitignore
+git add CLAUDE.md .claude/settings.json .gitmodules .recipes .gitignore
 git commit -m "chore: add agilbertdev-recipes"
 ```
 
-What gets committed: `.gitmodules`, the `.recipes` submodule pointer, and the `.gitignore` change. The downloaded skills and lock file stay out of git, because `bin/install` regenerates them.
+What gets committed: `CLAUDE.md`, `.claude/settings.json`, `.gitmodules`, the `.recipes` submodule pointer, and the `.gitignore` change. The downloaded skills and lock file stay out of git, because `bin/install` regenerates them.
 
 ## Set up on another machine
 

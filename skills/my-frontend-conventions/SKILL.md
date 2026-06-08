@@ -1,6 +1,6 @@
 ---
-name: frontend-conventions
-description: AGilbertDev's frontend conventions for Nuxt/Vue projects — component and composable choices, solution priority, and icons. Use when building UI, components, or pages in a personal Nuxt project. Pairs with styling-conventions for Tailwind and theming.
+name: my-frontend-conventions
+description: AGilbertDev's frontend conventions for Nuxt/Vue projects — component and composable choices, solution priority, and icons. Use when building UI, components, or pages in a personal Nuxt project. Pairs with my-styling-conventions for Tailwind and theming.
 ---
 
 # Frontend conventions (Nuxt / Vue)
