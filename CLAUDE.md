@@ -20,6 +20,9 @@ All French copy is Québécois, never français de France. Follow my own usage. 
 ## Context
 Solo developer on personal projects. Docs and config steer Claude and my future self, not teammates.
 
+## Agent pipeline
+Specialist agents live in `.claude/agents/`. Each one covers exactly one stage of the development pipeline. When starting a new feature, invoke the `pipeline` agent — it will identify which stages apply and walk through them in order. Never skip the spec stage or the code-review stage. The agents are AI-tool agnostic: the instructions are plain markdown and work regardless of which assistant is running them.
+
 ## On-demand skills
 Load these by name when the task matches. They carry the stack rules so this core stays small.
 - `my-frontend-conventions` for Nuxt and Vue components, composables, solution priority, and icons.

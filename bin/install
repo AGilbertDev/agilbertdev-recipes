@@ -19,7 +19,21 @@ if [ "$RECIPE_DIR" = "$PROJECT" ]; then
   exit 1
 fi
 
+echo "==> Initializing nested submodules (ai-agents, etc.)"
+(cd "$RECIPE_DIR" && git submodule update --init 2>/dev/null) || true
+
+mkdir -p "$PROJECT/.claude/agents"
 mkdir -p "$PROJECT/.claude/skills"
+
+echo "==> Linking agents from ai-agents"
+# Drop existing agent symlinks so retired agents do not linger as dead links.
+find "$PROJECT/.claude/agents" -maxdepth 1 -type l -delete 2>/dev/null || true
+for f in "$RECIPE_DIR"/agents/agents/*.md; do
+  [ -f "$f" ] || continue
+  name="$(basename "$f")"
+  ln -sfn "../../.recipes/agents/agents/$name" "$PROJECT/.claude/agents/$name"
+  echo "    linked $name"
+done
 
 echo "==> Linking local instruction skills from the recipe"
 # Drop existing local skill symlinks first so renamed or retired skills do not
@@ -105,8 +119,13 @@ else
   echo "    CLAUDE.md already wired"
 fi
 
-echo "==> Done. Skills in .claude/skills:"
+echo "==> Done."
+echo
+echo "Agents in .claude/agents:"
+ls "$PROJECT/.claude/agents"
+echo
+echo "Skills in .claude/skills:"
 ls "$PROJECT/.claude/skills"
 echo
 echo "Commit: CLAUDE.md, .claude/settings.json, .gitmodules, the .recipes pointer, and .gitignore."
-echo "Ignore (downloaded, re-installable): add '.claude/skills/' and 'skills-lock.json' to .gitignore."
+echo "Ignore (downloaded, re-installable): add '.claude/skills/' and '.claude/agents/' to .gitignore."
