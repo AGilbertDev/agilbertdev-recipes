@@ -20,8 +20,17 @@ All French copy is Québécois, never français de France. Follow my own usage. 
 ## Context
 Solo developer on personal projects. Docs and config steer Claude and my future self, not teammates.
 
-## Agent pipeline
-Specialist agents live in `.claude/agents/`. Each one covers exactly one stage of the development pipeline. When starting a new feature, invoke the `pipeline` agent — it will identify which stages apply and walk through them in order. Never skip the spec stage or the code-review stage. The agents are AI-tool agnostic: the instructions are plain markdown and work regardless of which assistant is running them.
+## Agent pipeline — mandatory
+
+Do not write implementation code directly. Every feature, page, route, bug fix, or non-trivial change must go through the agent pipeline.
+
+**How to start:** invoke the `pipeline` agent. It will ask what you are building, build a stage plan, and hand off to each specialist in order. The full sequence is:
+
+`specs` → `design` → `frontend` / `backend` → `compliance` → `seo` → `accessibility` → `unit-test` → `code-review` → `commit`
+
+Stages that do not apply to a given feature are skipped. Specs and code review are never skipped.
+
+The specialist agents live in `.claude/agents/`. They are plain markdown files — the instructions work regardless of which AI tool is running them.
 
 ## On-demand skills
 Load these by name when the task matches. They carry the stack rules so this core stays small.
