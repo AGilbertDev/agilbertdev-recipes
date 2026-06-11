@@ -30,7 +30,7 @@ Do not write implementation code directly. Every feature, page, route, bug fix, 
 
 Stages that do not apply to a given feature are skipped. Specs and code review are never skipped.
 
-The specialist agents live in `.claude/agents/`. They are plain markdown files — the instructions work regardless of which AI tool is running them.
+The specialist agents live in `.claude/agents/agilbertdev/`, symlinked from the shared `ai-agents` repo. They are plain markdown files — the instructions work regardless of which AI tool is running them. A project may add its own agent as a real `.md` file at the top level of `.claude/agents/` to override or extend the shared set.
 
 ## On-demand skills
 Load these by name when the task matches. They carry the stack rules so this core stays small.
