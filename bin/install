@@ -30,23 +30,48 @@ mkdir -p "$PROJECT/.claude/skills"
 echo "==> Linking the agilbertdev agent set"
 # One symlink for the whole shared set, not one per file. Claude Code scans
 # .claude/agents/ recursively, so the subfolder is discovered. New agents in
-# the ai-agents repo show up on the next pull with no install re-run, and any
-# project-specific agent can still live as a real .md file at the top level of
-# .claude/agents/ without colliding with the shared set.
-# Clean up the old per-file symlinks from earlier installs.
-find "$PROJECT/.claude/agents" -maxdepth 1 -type l -delete 2>/dev/null || true
-ln -sfn "../../.recipes/agents/agents" "$PROJECT/.claude/agents/agilbertdev"
-echo "    linked agilbertdev -> .recipes/agents/agents"
+# the ai-agents repo show up on the next pull with no install re-run.
+#
+# This install only ever touches symlinks that point into .recipes. It never
+# deletes or overwrites a real file or folder. So a project-specific agent kept
+# as a real .md at the top level of .claude/agents/ is left untouched, and if
+# you diverge a shared agent by replacing its symlink with a real copy, the
+# install skips it instead of clobbering your copy.
+#
+# Remove only links that point into the shared recipe (old per-file links from
+# earlier installs and the agilbertdev link itself), then relink.
+find "$PROJECT/.claude/agents" -maxdepth 1 -type l 2>/dev/null | while read -r link; do
+  case "$(readlink "$link")" in
+    *.recipes/agents/*) rm -f "$link" ;;
+  esac
+done
+if [ -e "$PROJECT/.claude/agents/agilbertdev" ] && [ ! -L "$PROJECT/.claude/agents/agilbertdev" ]; then
+  echo "    agilbertdev is a real folder here (diverged) — left untouched"
+else
+  ln -sfn "../../.recipes/agents/agents" "$PROJECT/.claude/agents/agilbertdev"
+  echo "    linked agilbertdev -> .recipes/agents/agents"
+fi
 
 echo "==> Linking local instruction skills from the recipe"
-# Drop existing local skill symlinks first so renamed or retired skills do not
-# linger as dead links. Downloaded third-party skills are real folders, not
-# symlinks, so this leaves them untouched.
-find "$PROJECT/.claude/skills" -maxdepth 1 -type l -delete 2>/dev/null || true
+# Same rule as the agents above: only ever touch symlinks that point into the
+# shared recipe. Downloaded third-party skills are real folders, so they are
+# left untouched, and if you diverge a my-* skill by replacing its symlink with
+# a real copy, the install skips it instead of clobbering your copy.
+# Remove only links into .recipes/skills so renamed or retired skills do not
+# linger as dead links.
+find "$PROJECT/.claude/skills" -maxdepth 1 -type l 2>/dev/null | while read -r link; do
+  case "$(readlink "$link")" in
+    *.recipes/skills/*) rm -f "$link" ;;
+  esac
+done
 for dir in "$RECIPE_DIR"/skills/*/; do
   name="$(basename "$dir")"
-  ln -sfn "../../.recipes/skills/$name" "$PROJECT/.claude/skills/$name"
-  echo "    linked $name"
+  if [ -e "$PROJECT/.claude/skills/$name" ] && [ ! -L "$PROJECT/.claude/skills/$name" ]; then
+    echo "    $name is a real folder here (diverged) — left untouched"
+  else
+    ln -sfn "../../.recipes/skills/$name" "$PROJECT/.claude/skills/$name"
+    echo "    linked $name"
+  fi
 done
 
 echo "==> Downloading third-party skills from upstream (skills CLI)"
