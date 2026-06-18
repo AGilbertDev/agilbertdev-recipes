@@ -2,6 +2,9 @@
 
 These are my always-on personal conventions. They are true in my personal projects regardless of the task. Each project imports this file from its own `CLAUDE.md` (with `@.recipes/CLAUDE.md`), so it loads every session. Claude Code only auto-loads `CLAUDE.md`, not `AGENTS.md`, which is why this lives here and loads through an import. Stack rules are not here. They live in on-demand skills, listed at the bottom.
 
+## Capturing new rules — mandatory
+Every rule I give you is a standing convention, not a one-off for the current task. When I state a new rule, capture it in the shared recipes before acting on it. Core conventions go in this file in `agilbertdev-recipes`. Stack rules go in the relevant skill. Agent behaviour goes in the matching agent in `ai-agents`. Push the change, then update the `.recipes` submodule pointer in the current project so the rule loads back in. This rule is itself a convention, so it lives here.
+
 ## Git identity
 Commit and push with the personal AGilbertDev identity, configured locally in each repo. Never commit with a work identity on a personal repo. Personal Vercel builds also expect the personal identity. A guard hook blocks a commit or push made under a different identity, so set the local identity early.
 
