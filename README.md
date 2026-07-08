@@ -58,22 +58,23 @@ git submodule add https://github.com/AGilbertDev/agilbertdev-recipes.git .recipe
 bash .recipes/bin/install
 ```
 
-`bin/install` is re-runnable and does four things:
+`bin/install` is re-runnable and does five things:
 
 - Symlinks every local skill (the `my-*` conventions, `new-project`, `tutorial-mode`) from the submodule into `.claude/skills/`, pruning links for any renamed or retired skill.
 - Downloads the third-party skills into `.claude/skills/` as real directories (via `npx skills add ...`), and fetches the official `nuxt-ui` skill from `nuxt/ui`. A `skills-lock.json` pins the downloaded versions.
 - Merges the security baseline (`settings.base.json`) into `.claude/settings.json`.
 - Wires the conventions core into the project's `CLAUDE.md`, creating it if needed and importing `@.recipes/CLAUDE.md` and `@AGENTS.md`.
+- Copies a `.devcontainer/` from [`templates/devcontainer`](./templates/devcontainer) if the project has none: a Claude Code sandbox container (Node base with git, curl, sudo, bun, and the Claude Code CLI) so an agent can run autonomously in an isolated container. Copied as real files, never overwriting an existing `.devcontainer/`, so each project owns and can diverge its copy.
 
 Then ignore the generated files and commit the recipe wiring:
 
 ```bash
 printf '\n# agent skills (downloaded, re-installable from .recipes)\n.claude/skills/\nskills-lock.json\n' >> .gitignore
-git add CLAUDE.md .claude/settings.json .gitmodules .recipes .gitignore
+git add CLAUDE.md .claude/settings.json .gitmodules .recipes .gitignore .devcontainer
 git commit -m "chore: add agilbertdev-recipes"
 ```
 
-What gets committed: `CLAUDE.md`, `.claude/settings.json`, `.gitmodules`, the `.recipes` submodule pointer, and the `.gitignore` change. The downloaded skills and lock file stay out of git, because `bin/install` regenerates them.
+What gets committed: `CLAUDE.md`, `.claude/settings.json`, `.gitmodules`, the `.recipes` submodule pointer, the `.gitignore` change, and `.devcontainer/`. The downloaded skills and lock file stay out of git, because `bin/install` regenerates them.
 
 ## Set up on another machine
 

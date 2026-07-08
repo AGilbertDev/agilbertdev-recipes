@@ -147,6 +147,20 @@ else
   echo "    CLAUDE.md already wired"
 fi
 
+echo "==> Installing the devcontainer sandbox (if absent)"
+# A Claude Code sandbox container so an agent can run autonomously in isolation:
+# a Node base with git, curl, sudo, bun, and the Claude Code CLI. Copied as real
+# files (not symlinked like skills) so each project commits its own copy and can
+# diverge. Never clobbers an existing .devcontainer.
+if [ -e "$PROJECT/.devcontainer" ]; then
+  echo "    .devcontainer already present — left untouched"
+else
+  mkdir -p "$PROJECT/.devcontainer"
+  cp "$RECIPE_DIR/templates/devcontainer/devcontainer.json" "$PROJECT/.devcontainer/devcontainer.json"
+  cp "$RECIPE_DIR/templates/devcontainer/Dockerfile" "$PROJECT/.devcontainer/Dockerfile"
+  echo "    created .devcontainer"
+fi
+
 echo "==> Done."
 echo
 echo "Agents (.claude/agents/agilbertdev):"
@@ -155,5 +169,5 @@ echo
 echo "Skills in .claude/skills:"
 ls "$PROJECT/.claude/skills"
 echo
-echo "Commit: CLAUDE.md, .claude/settings.json, .gitmodules, the .recipes pointer, and .gitignore."
+echo "Commit: CLAUDE.md, .claude/settings.json, .gitmodules, the .recipes pointer, .gitignore, and .devcontainer/."
 echo "Ignore (downloaded, re-installable): add '.claude/skills/' and '.claude/agents/' to .gitignore."
