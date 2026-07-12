@@ -10,29 +10,29 @@ It is the single source of truth for how I work with coding agents (Claude Code,
 
 **Instruction skills (mine, shipped here, loaded on demand):**
 
-| Skill | What it is |
-|---|---|
-| `my-frontend-conventions` | Nuxt/Vue: solution priority (Nuxt UI first), component patterns, icons. |
-| `my-backend-conventions` | Nuxt/Nitro: Turso + Drizzle, Zod validation, server routes, owner-managed auth, email. |
-| `my-styling-conventions` | Visual identity: Hanken Grotesk type, semantic-token theming, fluid `clamp()` sizing, dark mode, accessible Nuxt UI components. |
-| `new-project` | The playbook for bootstrapping a new project: scaffold the Nuxt app, wire in this recipe, set the Bun/ESLint/Prettier/husky/i18n baseline. |
-| `tutorial-mode` | An opt-in collaboration mode for learning-by-building: teach step by step, do not write the code for me. |
+| Skill                     | What it is                                                                                                                                 |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `my-frontend-conventions` | Nuxt/Vue: solution priority (Nuxt UI first), component patterns, icons.                                                                    |
+| `my-backend-conventions`  | Nuxt/Nitro: Turso + Drizzle, Zod validation, server routes, owner-managed auth, email.                                                     |
+| `my-styling-conventions`  | Visual identity: Hanken Grotesk type, semantic-token theming, fluid `clamp()` sizing, dark mode, accessible Nuxt UI components.            |
+| `new-project`             | The playbook for bootstrapping a new project: scaffold the Nuxt app, wire in this recipe, set the Bun/ESLint/Prettier/husky/i18n baseline. |
+| `tutorial-mode`           | An opt-in collaboration mode for learning-by-building: teach step by step, do not write the code for me.                                   |
 
 The `my-` prefix marks the skills I author. Everything without it is a framework or community skill, downloaded from upstream.
 
 **Third-party skills (downloaded from their sources at install time, not vendored here):**
 
-| Skill | Source |
-|---|---|
-| `nuxt-ui` (official) | [`nuxt/ui`](https://github.com/nuxt/ui) `@v4`, `skills/nuxt-ui` |
-| `vue`, `vue-best-practices`, `nuxt` | [`antfu/skills`](https://github.com/antfu/skills) |
-| `zod` | [`pproenca/dot-skills`](https://github.com/pproenca/dot-skills) |
-| `bun` | [`midudev/autoskills`](https://github.com/midudev/autoskills) |
-| `tailwind-css-patterns` | [`giuseppe-trisciuoglio/developer-kit`](https://github.com/giuseppe-trisciuoglio/developer-kit) |
-| `typescript-advanced-types` | [`wshobson/agents`](https://github.com/wshobson/agents) |
-| `accessibility`, `seo` | [`addyosmani/web-quality-skills`](https://github.com/addyosmani/web-quality-skills) |
-| `frontend-design` | [`anthropics/skills`](https://github.com/anthropics/skills) |
-| `vue-debug-guides` | [`hyf0/vue-skills`](https://github.com/hyf0/vue-skills) |
+| Skill                               | Source                                                                                          |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `nuxt-ui` (official)                | [`nuxt/ui`](https://github.com/nuxt/ui) `@v4`, `skills/nuxt-ui`                                 |
+| `vue`, `vue-best-practices`, `nuxt` | [`antfu/skills`](https://github.com/antfu/skills)                                               |
+| `zod`                               | [`pproenca/dot-skills`](https://github.com/pproenca/dot-skills)                                 |
+| `bun`                               | [`midudev/autoskills`](https://github.com/midudev/autoskills)                                   |
+| `tailwind-css-patterns`             | [`giuseppe-trisciuoglio/developer-kit`](https://github.com/giuseppe-trisciuoglio/developer-kit) |
+| `typescript-advanced-types`         | [`wshobson/agents`](https://github.com/wshobson/agents)                                         |
+| `accessibility`, `seo`              | [`addyosmani/web-quality-skills`](https://github.com/addyosmani/web-quality-skills)             |
+| `frontend-design`                   | [`anthropics/skills`](https://github.com/anthropics/skills)                                     |
+| `vue-debug-guides`                  | [`hyf0/vue-skills`](https://github.com/hyf0/vue-skills)                                         |
 
 The machine-readable manifest is [`skills.manifest.json`](./skills.manifest.json).
 

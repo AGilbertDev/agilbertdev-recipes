@@ -1,23 +1,27 @@
 {
-	"name": "Claude Code Sandbox",
+  "name": "Claude Code Sandbox",
 
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
 
-	"remoteUser": "node",
+  "remoteUser": "node",
 
-	"remoteEnv": {
-		"ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
-	},
+  "remoteEnv": {
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
+  },
 
-	"runArgs": ["--name", "claude-code-sandbox-${localWorkspaceFolderBasename}", "--security-opt=label=disable"],
+  "runArgs": [
+    "--name",
+    "claude-code-sandbox-${localWorkspaceFolderBasename}",
+    "--security-opt=label=disable"
+  ],
 
-	"customizations": {
-		"vscode": {
-			"extensions": ["anthropic.claude-code"]
-		}
-	},
+  "customizations": {
+    "vscode": {
+      "extensions": ["anthropic.claude-code"]
+    }
+  },
 
-	"postCreateCommand": "mkdir -p ~/.claude"
+  "postCreateCommand": "mkdir -p ~/.claude"
 }

@@ -12,7 +12,7 @@ lawyer, an accountant, and the CAI before commercial launch. These are engineeri
 Governing principle: **privacy, security, and accessibility by design and by default; minimize data;
 make user rights and required disclosures easy.**
 
-> **Scope note:** This skill is what's true for *every* project. **App-store requirements are
+> **Scope note:** This skill is what's true for _every_ project. **App-store requirements are
 > project-based** (they depend on the platform shipped to) — keep those in the project's `PLAYSTORE.md`,
 > not here.
 
@@ -68,6 +68,7 @@ Collect the minimum; every data point adds a declaration and risk. No analytics/
 
 Québec-specific, non-negotiable for consumer-facing software offered in Québec. (Law 101 is the Charter;
 Law 96 strengthened it.)
+
 - Consumer-facing UI, marketing, and **legal documents** available in **French**, French given **at least
   equal prominence**; contracts of adhesion available in French.
 - Aligns with the standing convention that **Québécois French is the default locale** — treat French as a
@@ -75,8 +76,8 @@ Law 96 strengthened it.)
 
 ## 5. IP & licensing
 
-- **Game rules:** mechanics/systems are **not** copyrightable — only the specific *expression* (rulebook
-  text, named spells/monsters/stat blocks = Product Identity) and *trademarks* are. Build **original
+- **Game rules:** mechanics/systems are **not** copyrightable — only the specific _expression_ (rulebook
+  text, named spells/monsters/stat blocks = Product Identity) and _trademarks_ are. Build **original
   rulesets inspired by** a genre; do not copy any publisher's text, names, or marks, or imply
   affiliation. (Inspired-by, e.g. a "D&D-inspired" system, is fine; copying D&D content/marks is not.)
 - **Dependencies:** all permissive (MIT/Apache-2.0/…) → commercial use OK; ship an **"Open source
@@ -87,6 +88,7 @@ Law 96 strengthened it.)
 ---
 
 ## How this shows up in a Nuxt project
+
 - `/legal/privacy`, `/legal/terms`, `/legal/eula`, `/legal/delete-account`, cookie notice — pages,
   **French (equal prominence) + English**.
 - A consent composable gating all non-essential storage/trackers, **default-off**.
