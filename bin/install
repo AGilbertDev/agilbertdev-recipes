@@ -158,6 +158,8 @@ else
   mkdir -p "$PROJECT/.devcontainer"
   cp "$RECIPE_DIR/templates/devcontainer/devcontainer.json" "$PROJECT/.devcontainer/devcontainer.json"
   cp "$RECIPE_DIR/templates/devcontainer/Dockerfile" "$PROJECT/.devcontainer/Dockerfile"
+  cp "$RECIPE_DIR/templates/devcontainer/setup.sh" "$PROJECT/.devcontainer/setup.sh"
+  chmod +x "$PROJECT/.devcontainer/setup.sh"
   echo "    created .devcontainer"
 fi
 
