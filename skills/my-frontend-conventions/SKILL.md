@@ -21,6 +21,16 @@ Look up the official docs and explain the reasoning rather than guessing. When n
 - Prefer Nuxt UI primitives (`UButton`, `UCard`, `UForm`, `UModal`, `UTable`, `UInput`, and so on) before building custom.
 - Vue 3 Composition API with `<script setup>`. Keep components small and composable; pull shared logic into composables.
 
+## Data mutations and cache invalidation
+
+Always invalidate the client cache after a mutation. Any write that changes server state (a `$fetch` POST, PATCH, or DELETE) must be followed by refreshing whatever client-side cache reads that state, so the UI reflects the change without a full page reload.
+
+- Data loaded with `useFetch` or `useAsyncData`: call the returned `refresh()` after the write, or `refreshNuxtData(key)` for a shared key.
+- State that lives in the `nuxt-auth-utils` session (anything read off `user`): call `fetch()` from `useUserSession()` after the write so `user` re-reads.
+- An optimistic local update is fine for responsiveness, but the authoritative refetch still has to run so the cache and the server agree.
+
+Never rely on the next navigation or reload to pick up a change. A stale client cache after a mutation is a bug.
+
 ## Icons
 
 - Phosphor is the default set, via the Nuxt UI icon prop (`i-ph-*`). Match the icon weight to the text it sits with: use the `-bold` variants next to bold or large text so the glyph does not look thin, and scale the icon up as the text scales. Pick one weight family per project and stay consistent.
