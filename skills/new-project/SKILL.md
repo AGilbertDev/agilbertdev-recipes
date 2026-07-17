@@ -99,18 +99,23 @@ Commit a `.env.example` with the keys and no values. Never commit `.env`.
     "dev": "nuxt dev --host localhost --port 8080",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "postinstall": "git submodule update --init --recursive && nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "recipes:update": "git submodule update --remote --recursive && git add .recipes"
   },
   "lint-staged": {
     "*.{js,ts,vue}": ["eslint --fix", "prettier --write"]
   }
 }
 ```
+
+`postinstall` runs `git submodule update --init --recursive` before `nuxt prepare`, so every `bun i` restores the `.recipes` submodule (and the nested `agents` repo it carries) to exactly the commits the project pins. It is deterministic and safe to run on every install. On a fresh clone it also does the submodule init for you, so `bun i` alone brings the agents and skills online. This syncs to the pinned commits, it does not pull anything forward.
+
+`recipes:update` is the deliberate counterpart. Run `bun run recipes:update` when you actually want to move the recipes and agents to their latest push. It pulls every submodule to its remote tip and stages the pointer bump for you to review and commit. Keep this out of `postinstall`: pulling to latest mutates the working tree and silently changes which agents run, so it should be an explicit choice, never a side effect of installing dependencies.
 
 ## .prettierrc
 
