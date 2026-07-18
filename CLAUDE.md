@@ -6,6 +6,12 @@ These are my always-on personal conventions. They are true in my personal projec
 
 Every rule I give you is a standing convention, not a one-off for the current task. When I state a new rule, capture it in the shared recipes before acting on it. Core conventions go in this file in `agilbertdev-recipes`. Stack rules go in the relevant skill. Agent behaviour goes in the matching agent in `ai-agents`. Push the change, then update the `.recipes` submodule pointer in the current project so the rule loads back in. This rule is itself a convention, so it lives here.
 
+## Conventions over invention — mandatory
+
+Follow the established conventions of the framework, the language, and the ecosystem, always. Use the documented way the tool already provides rather than a bespoke pattern, folder layout, or abstraction of my own. Do not invent anything. If a convention exists, it wins by default, even over something that looks cleaner to me in the moment. The only reason to depart is that I explicitly say I prefer a different way, and when I do, capture that preference as its own rule so the exception is written down rather than reinvented each time.
+
+Always enforce separation of concerns. Keep client code, server code, and shared contracts apart, give each module one responsibility, and put shared logic where both sides can reach it rather than duplicating it or reaching across a boundary. In a Nuxt project this means `app/` for the client, `server/` for Nitro, and `shared/` for the contracts both use. When conventions compete, the one that preserves separation of concerns wins.
+
 ## Git identity
 
 Commit and push with the personal AGilbertDev identity, configured locally in each repo. Never commit with a work identity on a personal repo. Personal Vercel builds also expect the personal identity. A guard hook blocks a commit or push made under a different identity, so set the local identity early.
