@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
-# Installs the extra CLIs the sandbox needs beyond the base image, so every new
-# devcontainer has them without a manual step, and wires git to push through the
-# GitHub CLI. The script is idempotent and safe to re-run.
+# Installs the universal CLIs every sandbox needs beyond the base image, so every
+# new devcontainer has them without a manual step, and wires git to push through
+# the GitHub CLI. The script is idempotent and safe to re-run.
 #
-# Login is not baked into the image. You authenticate once with "gh auth login"
-# (and "turso auth login" if the project has a backend). The gh config lives on
-# a named volume mounted at ~/.config/gh (see devcontainer.json), so that one
-# login persists across rebuilds and across every recipe project on this
-# machine. You log in once, not once per container.
+# This is the shared baseline that every project inherits, so only truly universal
+# tooling belongs here. gh lives here because every project uses it. Project
+# specific tools (database clients like turso and sqlite3, and anything not all
+# projects need) do not belong in this template. Add those to that one project's
+# own .devcontainer instead, never here, so they never leak into other projects.
+#
+# Login is not baked into the image. You authenticate once with "gh auth login".
+# The gh config lives on a named volume mounted at ~/.config/gh (see
+# devcontainer.json), so that one login persists across rebuilds and across every
+# recipe project on this machine. You log in once, not once per container.
 
 set -uo pipefail
 
@@ -46,19 +51,6 @@ install_gh() {
   rm -rf "$tmp"
 }
 
-# Turso CLI. The official installer drops the binary in ~/.turso and adds it to
-# PATH through .bashrc.
-install_turso() {
-  if command -v turso >/dev/null 2>&1 || [ -x "$HOME/.turso/turso" ]; then
-    echo "turso already installed, skipping."
-    return 0
-  fi
-  echo "Installing turso."
-  if ! curl -sSfL https://get.tur.so/install.sh | bash; then
-    echo "turso install failed, skipping turso." >&2
-  fi
-}
-
 # Make git authenticate github.com through the GitHub CLI, so pushes use the
 # account you logged into with gh rather than any credential the host forwards
 # into the container. The empty value first drops an inherited generic helper
@@ -76,7 +68,6 @@ wire_git_to_gh() {
 }
 
 install_gh
-install_turso
 wire_git_to_gh
 
 echo "Sandbox setup done. If gh is not logged in yet, run: gh auth login"
