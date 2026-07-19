@@ -13,6 +13,15 @@ These are defaults for personal projects. Adjust per project when a project's ne
 - Define schema in Drizzle, derive validation with `drizzle-zod`.
 - Migrations with `drizzle-kit`.
 
+### Migrations must be idempotent and crash-resistant
+
+Every migration must be safe to re-run and must complete even after a partial failure or a crash, so running it again always drives the schema to the target state no matter where a prior run stopped. Never write a migration that only works against one exact starting state.
+
+- Use `IF NOT EXISTS` / `IF EXISTS` wherever the SQLite dialect supports it: `CREATE TABLE IF NOT EXISTS`, `CREATE INDEX IF NOT EXISTS`, `DROP TABLE IF EXISTS`, `DROP INDEX IF EXISTS`.
+- SQLite does not support `IF [NOT] EXISTS` on `ALTER TABLE ADD COLUMN` or `DROP COLUMN`, so guard those instead. Read `PRAGMA table_info(<table>)` first and skip the statement when the column already matches the target, or run through a runner that catches the benign `duplicate column name` and `no such column` errors and continues rather than aborting the whole migration.
+- Make backfills re-runnable. Use `INSERT ... WHERE NOT EXISTS` or `INSERT OR IGNORE` so a second run does not duplicate rows.
+- Apply through a runner that executes statement by statement and continues past statements that are already satisfied, so a crashed migration finishes cleanly on the next run rather than getting stuck halfway.
+
 ## Validation
 
 - Zod for all input validation. Validate at the server boundary (request body, params, query) before touching the database.
