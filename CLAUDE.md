@@ -12,6 +12,12 @@ Follow the established conventions of the framework, the language, and the ecosy
 
 Always enforce separation of concerns. Keep client code, server code, and shared contracts apart, give each module one responsibility, and put shared logic where both sides can reach it rather than duplicating it or reaching across a boundary. In a Nuxt project this means `app/` for the client, `server/` for Nitro, and `shared/` for the contracts both use. When conventions compete, the one that preserves separation of concerns wins.
 
+## No invalid states and safe recovery — mandatory
+
+Never leave the system in a state a user or process cannot get out of. Assume any process can be abandoned partway, any token or session can expire, and any step can be interrupted, and design so the outcome is always either fully done or safely recoverable. For every flow that spans more than one step or one request, work out what happens when it stops halfway, and give the affected user a way to restart or continue that does not depend on state they no longer hold. A dead end is a bug.
+
+Recovery must be safe. It can never become an authentication or authorization bypass, must not reveal whether an account exists, and must not let one user act on another's data. Prefer the documented recovery pattern of the framework over a bespoke one, and when in doubt fail closed and route the user back to a clean starting point rather than leaving them stranded.
+
 ## Git identity
 
 Commit and push with the personal AGilbertDev identity, configured locally in each repo. Never commit with a work identity on a personal repo. Personal Vercel builds also expect the personal identity. A guard hook blocks a commit or push made under a different identity, so set the local identity early.
