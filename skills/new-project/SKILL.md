@@ -11,6 +11,7 @@ The ordered playbook for starting a new AGilbertDev personal project. It scaffol
 
 - Nuxt 4 with Vue 3 and vue-router. Bun is the package manager and the task runner.
 - The frontend is Nuxt UI v4, Tailwind v4, and `@nuxt/fonts`. Follow `my-frontend-conventions` and `my-styling-conventions`.
+- Server-state reads and writes use TanStack Query (`@tanstack/vue-query`), registered once in an SSR-hydrated Nuxt plugin, with the query-key factory and the query and mutation composables described in `my-frontend-conventions`.
 - Localization is `@nuxtjs/i18n` with Québécois French as the default locale and English second.
 - TypeScript across the whole project.
 - A backend, when the project needs one, follows `my-backend-conventions` (Turso libSQL with Drizzle, Zod, `nuxt-auth-utils` for owner-managed auth, Resend for email).
