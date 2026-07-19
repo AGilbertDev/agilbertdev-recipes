@@ -27,9 +27,22 @@ Always invalidate the client cache after a mutation. Any write that changes serv
 
 - Data loaded with `useFetch` or `useAsyncData`: call the returned `refresh()` after the write, or `refreshNuxtData(key)` for a shared key.
 - State that lives in the `nuxt-auth-utils` session (anything read off `user`): call `fetch()` from `useUserSession()` after the write so `user` re-reads.
+- State derived from the session once does not re-derive when `user` re-reads. A `useState` seeded from `user` (for example the `useTheme` light and dark ids) and the active i18n locale keep their first value, so re-apply them by hand in the same success handler by setting the `useTheme` state and calling `setLocale`. Refreshing the session alone leaves these looking reverted.
 - An optimistic local update is fine for responsiveness, but the authoritative refetch still has to run so the cache and the server agree.
 
 Never rely on the next navigation or reload to pick up a change. A stale client cache after a mutation is a bug.
+
+## Server state with TanStack Query
+
+Use TanStack Query (`@tanstack/vue-query`) for reading and writing server state, layered on Nuxt's data fetching. Register it once in a Nuxt plugin with SSR hydration, dehydrating on the `app:rendered` hook and hydrating on the client.
+
+- Query keys live in one factory file, `app/queries/keys.ts`, exported as a `queryKeys` object with a function per key. A key is never hand-typed at a call site, so the keys a mutation invalidates always match the queries that produced them.
+- Query and mutation composables live in `app/composables/`, auto-imported, named `useXxxQuery` and `useXxxMutation`. A page reads and writes server state through these composables rather than a bare `$fetch`.
+- Every mutation invalidates the affected query keys in `onSuccess` with `queryClient.invalidateQueries`. Session-backed state is not in the query cache, so it is still refreshed through `useUserSession().fetch()` in the same `onSuccess`, following the mutations section above.
+
+## Loading state on submit
+
+Every form submit shows a loading state on its submit control while the write is in flight. Bind the submit `UButton`'s `:loading` to the mutation's `isPending`, or to the local in-flight flag when the write is not a TanStack mutation, and keep the control disabled until it settles. A slow write is then never mistaken for a dead button and cannot be double-submitted.
 
 ## Icons
 
