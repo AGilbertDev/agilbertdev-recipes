@@ -1,8 +1,21 @@
 # agilbertdev-recipes
 
-A small SDK of agent instructions: my reusable conventions and a curated skill set, pulled into any of my projects like a package.
+A small SDK of agent instructions. My reusable conventions and a curated skill set, pulled into any of my projects like a package.
+
+> Published for viewing and reference only. It is not open source. See [License](#license).
 
 It is the single source of truth for how I work with coding agents (Claude Code, and anything else that reads Agent Skills). Instead of re-explaining my preferences in every repo or copying a growing `AGENTS.md` around by hand, a project pulls this recipe and gets my conventions plus a tuned skill set in one command. Project repos then keep only their own project-specific facts.
+
+## Contents
+
+- [What's inside](#whats-inside)
+- [Design choices](#design-choices)
+- [Requirements](#requirements)
+- [Install into a project](#install-into-a-project)
+- [Set up on another machine](#set-up-on-another-machine)
+- [Install by hand (no script)](#install-by-hand-no-script)
+- [Update](#update)
+- [License](#license)
 
 ## What's inside
 
