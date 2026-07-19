@@ -30,6 +30,15 @@ Every migration must be safe to re-run and must complete even after a partial fa
 
 - Nitro server routes under `server/`. Keep handlers thin: validate, call a small typed function, return. Push reusable logic into `server/utils`.
 
+## List endpoints
+
+List endpoints paginate, sort, and search on the server, never on the client. The client sends the page, page size, sort column, sort direction, and search term as query params, and the endpoint returns only the rows for that page plus a total count. Client-side sorting or filtering only reorders the rows already loaded, so it silently breaks the moment the list spans more than one page. Do the work where the whole dataset lives.
+
+- Accept `page`, `pageSize`, `sort`, `order`, and `search` as validated query params. Use `z.coerce.number()` for the numeric ones with sane defaults and a max page size.
+- Whitelist the sortable columns with a Zod enum. Never sort by a raw column name taken from the query string.
+- Return the page rows plus a `total` count so the client can render pagination without loading everything.
+- Push the paging, sorting, and filtering against the full dataset. When a list is assembled in memory from more than one source, filter and sort the merged set before slicing the page, not after.
+
 ## Auth
 
 - Owner-managed auth with `nuxt-auth-utils`. No public signup and no third-party identity providers unless a project explicitly needs them.
