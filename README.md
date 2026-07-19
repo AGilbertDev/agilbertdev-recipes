@@ -116,4 +116,4 @@ npx skills update
 
 ## License
 
-MIT. See [LICENSE](./LICENSE).
+All rights reserved. This code is published for viewing and reference only, and is not open source. See [LICENSE](./LICENSE).
