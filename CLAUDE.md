@@ -12,6 +12,16 @@ Follow the established conventions of the framework, the language, and the ecosy
 
 Always enforce separation of concerns. Keep client code, server code, and shared contracts apart, give each module one responsibility, and put shared logic where both sides can reach it rather than duplicating it or reaching across a boundary. In a Nuxt project this means `app/` for the client, `server/` for Nitro, and `shared/` for the contracts both use. When conventions compete, the one that preserves separation of concerns wins.
 
+## Logic belongs to the backend — mandatory
+
+All logic is decided backend as much as possible, unless the components are frontend only. The frontend is a view with as little brain as possible. It draws what it is handed and does not work anything out for itself.
+
+So when a value is derived rather than stored, the server derives it and sends the finished answer, and where the data layer can make the decision, make it there rather than in application code above it. A status that depends on the current time, a total, a permission, an ordering, a filter, a page of results, a label chosen between several: all of these are decided server-side and arrive resolved. Do not ship a raw row plus the rules for interpreting it and let the client apply them, and never duplicate a rule on both sides, because two copies drift and the client's copy is the one that goes stale or gets tampered with. A pseudo-status or any other derived field is a legitimate part of an API response even though no column backs it.
+
+The exception is real and narrow: logic that is purely about presentation and has no meaning off the screen stays in the component, because the server has no business knowing about it. Which element has focus, whether a panel is open, a hover or transition state, a value formatted for display from data already resolved, a purely visual breakpoint choice. If the rule would still be true with no user interface attached, it is not presentation and it belongs to the backend.
+
+When both sides genuinely need the same pure rule, it lives once in the shared contract layer (`shared/` in a Nuxt project) and both import it. That is the one acceptable form of sharing; copying it is not.
+
 ## No invalid states and safe recovery — mandatory
 
 Never leave the system in a state a user or process cannot get out of. Assume any process can be abandoned partway, any token or session can expire, and any step can be interrupted, and design so the outcome is always either fully done or safely recoverable. For every flow that spans more than one step or one request, work out what happens when it stops halfway, and give the affected user a way to restart or continue that does not depend on state they no longer hold. A dead end is a bug.
