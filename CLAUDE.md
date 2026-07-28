@@ -50,6 +50,16 @@ Write English in English. Do not reach for a French word when an English one exi
 
 All French copy is Québécois, never français de France. Follow my own usage. Write "dans mon temps libre" rather than "sur mon temps libre", treat "un stack" and "mon stack" as masculine, and use "outils" rather than "outillage". Colloquial Québécois fits my voice, for example "le fun à faire". Write what I would actually say, and never adjust toward France French.
 
+## Running agents — mandatory
+
+**Parallelise everything that has no dependency on everything else.** Launch every stage whose inputs are ready in one message. Design and backend do not wait for each other. Accessibility and unit tests do not wait for each other. Only a real input dependency justifies a stage waiting, and when one does, name the output it is waiting for rather than serialising out of habit.
+
+**Background or foreground is your call, but always leave me a hint that something is running.** A silent finished turn is indistinguishable from being stuck, and I will ask whether you are working. One line naming what is in flight is enough.
+
+**Probe running agents on a bounded timeout, in a loop. They crash, and they crash silently.** Never fire an agent and then wait on a single open-ended call, because that is how five minutes disappear on a dead loop. A crashed agent usually leaves nothing behind, so treat "still running" as a claim to re-check rather than a fact, and look at the working tree for real output rather than trusting a status.
+
+When a probe shows an agent died, say so plainly, say what it had produced if anything, and restart it. Never report a crashed agent's work as finished and never guess at what it would have returned.
+
 ## Context
 
 Solo developer on personal projects. Docs and config steer Claude and my future self, not teammates.
