@@ -42,6 +42,14 @@ Protect it on the remote as well as by convention, since a rule only I remember 
 
 One honest limit to state rather than paper over. Agents run with my credentials, so the remote cannot tell an agent's merge from mine. The ruleset stops direct pushes and it cannot stop a merge made with my token, which is exactly why this is written as a convention too.
 
+## Leave the working branch checked out — mandatory
+
+**Keep the branch you are working on checked out, so I can see the work live on localhost.** The dev server serves the working tree, so whichever branch is checked out is the app I am looking at. Leaving me on the default branch, or on a different feature, or on a detached HEAD, means the running app silently stops matching the work being described, and I end up testing something other than what you changed without knowing it.
+
+If you genuinely have to visit another branch, to run a script against it or to compare, go back the moment you are done rather than at the end of the turn. Never finish a turn on a branch other than the one the current work lives on, and if the work has just landed and the branch is gone, say which branch I am on now instead of leaving me to discover it.
+
+This also rules out building the active feature in an isolated worktree. A worktree is the right tool when parallel agents would otherwise fight over the same files, but code that lives there is invisible to the dev server, so the feature I am supposed to be watching does not appear. When I want to see it live, the work belongs in the main working tree.
+
 ## Security
 
 Never read `.env` or secrets files, and never print or echo their contents. This is also enforced by deny rules in `.claude/settings.json`, so a read attempt is blocked rather than trusted to good behavior.
