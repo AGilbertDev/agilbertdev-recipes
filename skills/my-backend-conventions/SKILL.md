@@ -13,6 +13,14 @@ These are defaults for personal projects. Adjust per project when a project's ne
 - Define schema in Drizzle, derive validation with `drizzle-zod`.
 - Migrations with `drizzle-kit`.
 
+### A migration is for schema, not for data the seed owns
+
+Write a migration when the database structure changes. A table, a column, an index, a constraint, a type. Do not write one to rewrite rows that only exist because the dev seed put them there, because the seed already owns those rows and rebuilds them on the next run, so the migration duplicates work that is about to happen anyway and then sits in the history implying a structural change that never occurred.
+
+Check who owns the rows before reaching for a migration. Dev and test data is seed-owned and dev-only, so it is fixed by editing the seed. Real user data is migration-owned, and only that needs a backfill.
+
+This matters most when a stored value is renamed or split. If a column is free text with no CHECK, enum, or foreign key, then new values are already storable and there is no DDL to write at all, so the only question left is who rewrites the existing rows. And when a rename splits one value into two, a backfill has to pick a side for a distinction the old rows never recorded, which writes a guess permanently into the history. Rewriting the seed avoids inventing that answer. If real user rows are affected and the mapping is genuinely unknowable, stop and ask rather than choosing for the user.
+
 ### Migrations must be idempotent and crash-resistant
 
 Every migration must be safe to re-run and must complete even after a partial failure or a crash, so running it again always drives the schema to the target state no matter where a prior run stopped. Never write a migration that only works against one exact starting state.
