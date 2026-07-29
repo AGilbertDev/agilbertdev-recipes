@@ -56,6 +56,10 @@ All French copy is Québécois, never français de France. Follow my own usage. 
 
 **Background or foreground is your call, but always leave me a hint that something is running.** A silent finished turn is indistinguishable from being stuck, and I will ask whether you are working. One line naming what is in flight is enough.
 
+**A hint at launch is not enough. Arm a liveness watch that keeps reporting, so waiting is never ambiguous.** One line when the agent starts goes stale within a minute, and after that a working agent and a dead one look exactly the same from where I sit, which leaves me waiting on a corpse with no way to tell. Never hand back a turn whose only evidence of progress is a sentence I have to trust. Arm something that speaks on its own: a monitor or a background poll that emits when real output lands and, just as importantly, emits when nothing has changed for a few minutes. Silence must mean the watch is broken, never "probably still fine".
+
+Cover death, not just progress. A watch that only fires on success is the same failure again, because a crash, a hang, and a finished run all present as quiet. Emit on new files, new commits, and a stall, and prefer a slightly noisy watch over one that can go silent while something is wrong. Do not spam a fixed heartbeat either; report state changes plus a stall alert, so every message I get means something happened.
+
 **Probe running agents on a bounded timeout, in a loop. They crash, and they crash silently.** Never fire an agent and then wait on a single open-ended call, because that is how five minutes disappear on a dead loop. A crashed agent usually leaves nothing behind, so treat "still running" as a claim to re-check rather than a fact, and look at the working tree for real output rather than trusting a status.
 
 When a probe shows an agent died, say so plainly, say what it had produced if anything, and restart it. Never report a crashed agent's work as finished and never guess at what it would have returned.
