@@ -78,6 +78,10 @@ All French copy is Québécois, never français de France. Follow my own usage. 
 
 Cover death, not just progress. A watch that only fires on success is the same failure again, because a crash, a hang, and a finished run all present as quiet. Emit on new files, new commits, and a stall, and prefer a slightly noisy watch over one that can go silent while something is wrong. Do not spam a fixed heartbeat either; report state changes plus a stall alert, so every message I get means something happened.
 
+**Never silence stderr on a check you are about to draw a conclusion from.** `2>/dev/null` on a diagnostic turns a missing tool, a permission error or a typo into a clean empty result, and an empty result reads as a confident negative. That is how "nothing is listening on that port" gets reported when the truth was that the command did not exist. Keep `2>&1` on anything whose output becomes evidence, and read the error text rather than the line count, because "command not found" is itself one line and looks exactly like a header with no rows.
+
+Before trusting a negative, confirm the instrument can produce a positive. If a check reports the absence of something, prove it can see that thing when it is definitely there, by creating one and looking for it. A tool that reports nothing because it is broken and a world that genuinely contains nothing are indistinguishable from the output alone, and only the second one is a finding.
+
 **Probe running agents on a bounded timeout, in a loop. They crash, and they crash silently.** Never fire an agent and then wait on a single open-ended call, because that is how five minutes disappear on a dead loop. A crashed agent usually leaves nothing behind, so treat "still running" as a claim to re-check rather than a fact, and look at the working tree for real output rather than trusting a status.
 
 When a probe shows an agent died, say so plainly, say what it had produced if anything, and restart it. Never report a crashed agent's work as finished and never guess at what it would have returned.
