@@ -32,6 +32,16 @@ Recovery must be safe. It can never become an authentication or authorization by
 
 Commit and push with the personal AGilbertDev identity, configured locally in each repo. Never commit with a work identity on a personal repo. Personal Vercel builds also expect the personal identity. A guard hook blocks a commit or push made under a different identity, so set the local identity early.
 
+## The default branch is mine to merge — mandatory
+
+**Never merge into the default branch, and never push to it directly. I am the only one who merges, and only through a pull request.** Work on a branch, open the pull request, and stop there. Landing it is my decision and my click, not the last step of your task, so a finished feature means an open pull request rather than a merged one.
+
+This holds even when the work is obviously correct, the tests pass, and the review is clean. Those are arguments for opening the pull request, never for merging it. It also holds for the tidying that feels like it does not count, so no fast-forward of the default branch, no force push, no branch deletion, and no committing straight to it to fix a typo. If something on the default branch needs changing, it needs a branch and a pull request like everything else.
+
+Protect it on the remote as well as by convention, since a rule only I remember is not protection. On GitHub that is a repository ruleset on `~DEFAULT_BRANCH` requiring a pull request and blocking deletion and non-fast-forward pushes, with no bypass actors. Verify it with `gh api repos/<owner>/<repo>/rules/branches/<branch>`, which reports the rules the server actually applies. Do not verify with `git push --dry-run`, because dry-run skips the ref-update stage where rulesets are evaluated and will happily report a push that the server would reject.
+
+One honest limit to state rather than paper over. Agents run with my credentials, so the remote cannot tell an agent's merge from mine. The ruleset stops direct pushes and it cannot stop a merge made with my token, which is exactly why this is written as a convention too.
+
 ## Security
 
 Never read `.env` or secrets files, and never print or echo their contents. This is also enforced by deny rules in `.claude/settings.json`, so a read attempt is blocked rather than trusted to good behavior.
