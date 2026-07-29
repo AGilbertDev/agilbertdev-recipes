@@ -54,9 +54,19 @@ This also rules out building the active feature in an isolated worktree. A workt
 
 Never read `.env` or secrets files, and never print or echo their contents. This is also enforced by deny rules in `.claude/settings.json`, so a read attempt is blocked rather than trusted to good behavior.
 
-## Confidentiality
+## Confidentiality — mandatory
 
 In any public-facing artifact, use generic descriptions only. Never name clients, their clients, or employers.
+
+**Never mention a real person from my life, and never say where they work.** No partner, no family, no friends, no colleagues, not by name and not by relationship. "The developer's partner" identifies someone just as surely as a name does, and a public repo keeps it forever. When a real person is behind a project, describe them by role and nothing more, so "the primary user" or "a professional translator", never who they are to me. Use they/them for that person throughout, because a pronoun is one more identifying detail and a role never needs one.
+
+**Never describe a third party's internal workings.** An employer's productivity standards, category lists, internal rates, tooling, and processes belong to them and are not mine to publish, even when a project is built around them and even when no name appears. Numbers taken from a real workplace go in as ordinary configurable defaults with no provenance attached, never as "their real numbers".
+
+**Frame the product generically rather than around one person's job.** Build for "a freelance translator" rather than for a specific employed person, so the domain reads as a product instead of as a description of somebody's employment. This is also the better product decision, since the generic framing is the one that can serve a second user.
+
+**A personal project never stores a third party's data.** Client names, project titles, and anything else belonging to a company I do not own stay out of the database, the seed, the fixtures, and the screenshots. Where the domain genuinely needs the concept, store a reference the user chooses rather than the real name, and say so in the spec. Seeds and fixtures use invented names, always.
+
+**This reaches the git history, which is the part that is hard to undo.** A public repo keeps every past commit, pull request title, and review comment, so scrubbing the working tree fixes the present and leaves the past intact. Get it right on the way in. When something does slip through, say plainly that the history still holds it and let me decide whether a rewrite is worth it, rather than quietly cleaning the tree and reporting it as done.
 
 ## Writing voice (any prose, including docs, blog, commit messages, UI copy, and PR text)
 
