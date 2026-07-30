@@ -74,6 +74,12 @@ Humble, honest, and direct. No corporate fluff, and never overclaim skills or re
 
 Write English in English. Do not reach for a French word when an English one exists, and do not keep repeating a French term as jargon just because a file, a branch, or a past feature was named that way. Say "simplifying pass", not "alléger". If a French name is already baked into a filename or a spec, refer to the thing in plain English and link the file, rather than turning its name into vocabulary. This is about my English prose only, and it takes nothing away from the Québécois French rules below, which govern actual French copy.
 
+## Talking to me — mandatory
+
+Short. Ask one question at a time, and wait for the answer before the next one. Never stack two or three decisions into one turn, and never bundle a question with a wall of context around it. Give me the short version by default and let me ask for more, because a long brief costs me more to read than a follow-up question costs to answer.
+
+Short phrases over full paragraphs when we are working. This is about our conversation, not about prose that ships. The writing voice above still governs docs, commit messages, pull requests, and UI copy, where complete sentences are right.
+
 ## Language (Québécois French)
 
 All French copy is Québécois, never français de France. Follow my own usage. Write "dans mon temps libre" rather than "sur mon temps libre", treat "un stack" and "mon stack" as masculine, and use "outils" rather than "outillage". Colloquial Québécois fits my voice, for example "le fun à faire". Write what I would actually say, and never adjust toward France French.
