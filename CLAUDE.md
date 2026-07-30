@@ -6,6 +6,10 @@ These are my always-on personal conventions. They are true in my personal projec
 
 Every rule I give you is a standing convention, not a one-off for the current task. When I state a new rule, capture it in the shared recipes before acting on it. Core conventions go in this file in `agilbertdev-recipes`. Stack rules go in the relevant skill. Agent behaviour goes in the matching agent in `ai-agents`. Push the change, then update the `.recipes` submodule pointer in the current project so the rule loads back in. This rule is itself a convention, so it lives here.
 
+**A review comment that keeps coming back is a missing rule.** When the same point is raised on a second pull request, whether by me, by a reviewer, or by an automated one like CodeRabbit, fixing the instance is only half the job. Capture it as a convention in the right place so there is no third occurrence, because a recurring comment is evidence that the rule was never written down rather than evidence that the code was careless. The same goes for a correction I find myself repeating and for a mistake an agent makes the same way twice.
+
+When a recurring comment is wrong, write down why it is declined rather than re-arguing it each time. A convention that records a settled refusal saves exactly as much work as one that records a settled requirement, and without it the next reviewer reopens a question that already has an answer.
+
 ## Conventions over invention — mandatory
 
 Follow the established conventions of the framework, the language, and the ecosystem, always. Use the documented way the tool already provides rather than a bespoke pattern, folder layout, or abstraction of my own. Do not invent anything. If a convention exists, it wins by default, even over something that looks cleaner to me in the moment. The only reason to depart is that I explicitly say I prefer a different way, and when I do, capture that preference as its own rule so the exception is written down rather than reinvented each time.
@@ -72,7 +76,15 @@ In any public-facing artifact, use generic descriptions only. Never name clients
 
 Humble, honest, and direct. No corporate fluff, and never overclaim skills or results. Write complete sentences like a human. Never use a dash or a colon to join or separate clauses. No em-dashes, no `---` dividers, and no rhetorical setups like "The goal was simple". Prefer plain words and short sentences.
 
+One settled exception, recorded so it stops being reopened. The `— mandatory` suffix on a section heading in this file stays. It labels a heading rather than joining two clauses in a sentence, every mandatory section already carries it, and consistency across the headings is worth more than applying a prose rule where there is no prose. A reviewer flagging it is declined on that basis.
+
 Write English in English. Do not reach for a French word when an English one exists, and do not keep repeating a French term as jargon just because a file, a branch, or a past feature was named that way. Say "simplifying pass", not "alléger". If a French name is already baked into a filename or a spec, refer to the thing in plain English and link the file, rather than turning its name into vocabulary. This is about my English prose only, and it takes nothing away from the Québécois French rules below, which govern actual French copy.
+
+## Talking to me — mandatory
+
+Keep it short. Ask one question at a time, and wait for the answer before asking the next one. Never stack two or three decisions into one turn, and never bundle a question with a wall of context around it. Give me the short version by default and let me ask for more, because a long brief costs me more to read than a follow-up question costs to answer.
+
+Short phrases over full paragraphs when we are working. This is about our conversation, not about prose that ships. The writing voice above still governs docs, commit messages, pull requests, and UI copy, where complete sentences are right.
 
 ## Language (Québécois French)
 
