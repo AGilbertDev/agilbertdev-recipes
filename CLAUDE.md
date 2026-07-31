@@ -24,6 +24,16 @@ Prove the fix rather than asserting it. Produce a positive result from the thing
 
 When you truly cannot finish, put what is still broken in the first line of your reply, in plain words, with the exact state it is in. A known break I can see is recoverable. A silent one is what wrecks an afternoon.
 
+## An answer of mine is acted on in the same turn — mandatory
+
+**When I answer a question, the first thing you do is deliver that answer wherever it was needed. Before anything else, in the same turn, no exceptions.** An answer that reaches you and stops there is worse than never asking, because I believe the work is moving and it is not. This has cost hours twice in one session, both times with the decision sitting in a reply while a pipeline waited on it.
+
+The failure never looks like a failure from where you sit. You asked, I answered, the exchange felt complete, and the turn ended. Nothing errors. The gap only shows up as silence, and silence is what you are worst at noticing, which is exactly why the rule is about ordering rather than vigilance. Relay first, then report, then think about what is next.
+
+**Treat a stall alert as a bill you owe rather than a fact about a process.** When a watch reports that nothing is moving and something is waiting on a decision, the first thing to check is whether I have already given you the answer and you are sitting on it. Act on the first alert. If a second one arrives about the same wait, that is not information, it is evidence you ignored the first.
+
+**Never report progress you have not caused.** Saying a stage is running when it is parked on an answer in your own transcript is a false status, and a false status is worse than no status, because it converts my waiting into confidence.
+
 ## Conventions over invention — mandatory
 
 Follow the established conventions of the framework, the language, and the ecosystem, always. Use the documented way the tool already provides rather than a bespoke pattern, folder layout, or abstraction of my own. Do not invent anything. If a convention exists, it wins by default, even over something that looks cleaner to me in the moment. The only reason to depart is that I explicitly say I prefer a different way, and when I do, capture that preference as its own rule so the exception is written down rather than reinvented each time.
