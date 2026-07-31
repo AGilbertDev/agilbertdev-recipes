@@ -56,6 +56,18 @@ Never leave the system in a state a user or process cannot get out of. Assume an
 
 Recovery must be safe. It can never become an authentication or authorization bypass, must not reveal whether an account exists, and must not let one user act on another's data. Prefer the documented recovery pattern of the framework over a bespoke one, and when in doubt fail closed and route the user back to a clean starting point rather than leaving them stranded.
 
+## One feature per pull request — mandatory
+
+**One feature, one pull request. Never more, whatever the reason looks like at the time.** A feature is a thing with its own spec, so two spec documents on one branch means two pull requests, not one branch with a well-written explanation.
+
+The reason is not tidiness, it is that nobody can spec a whole app in advance and pretending otherwise is what does the damage. Scope will be discovered mid-build, because that is what building tells you. When it turns up, it belongs in the next pull request rather than this one. A feature that grows a second feature inside it stops being reviewable, loses the one-at-a-time trail the project exists to demonstrate, and makes every stage after the growth read a spec that no longer describes what is being built.
+
+Discovering scope is not the failure. Absorbing it is. Write the finding down, finish what is open, and let it be the thing that comes next.
+
+**The exception I will not accept is urgency.** "It touches the same files" and "splitting costs hours" are arguments for having noticed sooner, never for bundling. If splitting a branch has genuinely become expensive, that is the cost of having absorbed the scope, and the right response is to say so plainly rather than to treat the expense as permission.
+
+A fix is not a feature and does not need its own pull request, but it does need its own paragraph saying why it is in the diff. A bug fix, a hygiene change, a missing guard, or a correction to something the feature exposed can ride along. A second thing with a spec cannot.
+
 ## Git identity
 
 Commit and push with the personal AGilbertDev identity, configured locally in each repo. Never commit with a work identity on a personal repo. Personal Vercel builds also expect the personal identity. A guard hook blocks a commit or push made under a different identity, so set the local identity early.
