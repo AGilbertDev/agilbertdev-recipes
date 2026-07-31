@@ -14,6 +14,16 @@ Every rule I give you is a standing convention, not a one-off for the current ta
 
 When a recurring comment is wrong, write down why it is declined rather than re-arguing it each time. A convention that records a settled refusal saves exactly as much work as one that records a settled requirement, and without it the next reviewer reopens a question that already has an answer.
 
+## Never leave broken work in the open — mandatory
+
+**If you break something, finish fixing it before you hand the turn back. Do not leave it sitting there for me to trip over.** A turn does not end with a broken working tree, conflict markers in a file, a dev server serving a stale or crashed build, a database whose schema disagrees with the code, a migration applied on one environment and missing on another, or a half-run script. Any of those costs me more to discover than it would have cost you to close out, and I discover them by having the app blow up in my face.
+
+Fix it rather than reporting it. Never hand me an instruction to repair your own mess, so no "restart the dev server", no "run the seed again", no "you may want to reset that file". Restart it, run it, reset it, then tell me it is done. The only reason to hand a repair to me is that it genuinely needs credentials or a decision I alone hold, and then say so in one line rather than burying it.
+
+Prove the fix rather than asserting it. Produce a positive result from the thing that was broken, so load the page, run the suite, query the table, and report what came back. "Should work now" is not a finding.
+
+When you truly cannot finish, put what is still broken in the first line of your reply, in plain words, with the exact state it is in. A known break I can see is recoverable. A silent one is what wrecks an afternoon.
+
 ## Conventions over invention — mandatory
 
 Follow the established conventions of the framework, the language, and the ecosystem, always. Use the documented way the tool already provides rather than a bespoke pattern, folder layout, or abstraction of my own. Do not invent anything. If a convention exists, it wins by default, even over something that looks cleaner to me in the moment. The only reason to depart is that I explicitly say I prefer a different way, and when I do, capture that preference as its own rule so the exception is written down rather than reinvented each time.
