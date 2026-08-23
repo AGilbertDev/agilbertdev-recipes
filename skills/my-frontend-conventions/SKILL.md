@@ -1,6 +1,6 @@
 ---
 name: my-frontend-conventions
-description: AGilbertDev's frontend conventions for Nuxt/Vue projects — component and composable choices, solution priority, and icons. Use when building UI, components, or pages in a personal Nuxt project. Pairs with my-styling-conventions for Tailwind and theming.
+description: AGilbertDev's frontend conventions for Nuxt/Vue projects — component and composable choices, solution priority, icons, and page performance. Use when building UI, components, or pages in a personal Nuxt project, or when a page is slow and you need to find what is actually costing the time. Pairs with my-styling-conventions for Tailwind and theming.
 ---
 
 # Frontend conventions (Nuxt / Vue)
@@ -54,6 +54,23 @@ Every form submit shows a loading state on its submit control while the write is
 - Build a long landing or portfolio page as one route that scrolls through sections, each its own component under `components/home/` (hero, about, experience, and so on), assembled in the page. Keep the page file a thin list of those sections.
 - A small reusable `SectionHeader` component (a mono `text-primary` kicker plus the section `h2`) keeps headers consistent. Exactly one `h1` (the hero), one `h2` per section, in order.
 - For in-page anchor nav, keep the section ids in one composable (for example `useSectionId`) so the nav links and each `<section :id>` always agree. On a bilingual site make the ids locale-aware there (`#a-propos` / `#about`), and translate the current hash when toggling locale so the toggle stays on the same section.
+
+## Performance
+
+Find the bottleneck before changing anything, in this order.
+
+1. **TTFB.** Is the page cached at the CDN, or does every visit run a function? On Vercel, `curl -sI <url> | grep -i x-vercel-cache`. `MISS` every time means nothing is cached. Measure a request after the site has been idle, because on a quiet site the cold start is the normal arrival.
+2. **Render-blocking CSS.** The stylesheet in the head holds up the first paint.
+3. **The JS bundle.** Run `nuxi analyze` rather than guessing what is in it. Module scripts are deferred, so the bundle blocks interactivity rather than paint.
+4. **Fonts.** Count the files and weights actually rendered, not the ones configured.
+
+A skeleton only helps for something that arrives on a later request than the markup. Server-rendered text ships in the same response as any skeleton standing in for it, so the skeleton waits exactly as long and then shows a grey box first. An image is a separate request, so `@nuxt/image`'s `placeholder` is worth having.
+
+### Prerendering and i18n
+
+`routeRules: { '/': { prerender: true } }` puts a page on the CDN and removes the function, which on a quiet site is the biggest win available.
+
+It does not combine with browser-language detection. A prerendered page gets no request, so `detectBrowserLanguage` has nothing to read and silently never fires. ISR does not rescue it either, because i18n writes its cookie on every render and Vercel will not cache a response carrying `set-cookie`. On a prerendered bilingual site, set `detectBrowserLanguage: false` and let the language toggle do the switching. `hreflang` and the canonicals still send search engines to the right URL, so only the first-visit redirect is lost.
 
 ## Scroll reveal
 

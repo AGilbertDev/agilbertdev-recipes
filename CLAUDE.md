@@ -40,6 +40,8 @@ Follow the established conventions of the framework, the language, and the ecosy
 
 Always enforce separation of concerns. Keep client code, server code, and shared contracts apart, give each module one responsibility, and put shared logic where both sides can reach it rather than duplicating it or reaching across a boundary. In a Nuxt project this means `app/` for the client, `server/` for Nitro, and `shared/` for the contracts both use. When conventions compete, the one that preserves separation of concerns wins.
 
+A default the tool ships with is not the same thing as its convention, so this is no reason to follow one off a cliff. When a documented default makes the site materially worse for a visitor, look for another supported configuration that gives up a feature I can afford, before either swallowing the cost or building something bespoke. Never invent a workaround to protect a feature without first checking the feature is worth its price, and give me that price in numbers. A feature is affordable when the visitor has an obvious manual path to the same place. On the portfolio, i18n's automatic language redirect lost to a one to three second blank screen, because the language toggle sits in the navbar. Turning that detection off was still using the module its documented way. Rebuilding the detection in edge middleware was not.
+
 ## Logic belongs to the backend — mandatory
 
 All logic is decided backend as much as possible, unless the components are frontend only. The frontend is a view with as little brain as possible. It draws what it is handed and does not work anything out for itself.
@@ -67,6 +69,14 @@ Discovering scope is not the failure. Absorbing it is. Write the finding down, f
 **The exception I will not accept is urgency.** "It touches the same files" and "splitting costs hours" are arguments for having noticed sooner, never for bundling. If splitting a branch has genuinely become expensive, that is the cost of having absorbed the scope, and the right response is to say so plainly rather than to treat the expense as permission.
 
 A fix is not a feature and does not need its own pull request, but it does need its own paragraph saying why it is in the diff. A bug fix, a hygiene change, a missing guard, or a correction to something the feature exposed can ride along. A second thing with a spec cannot.
+
+## Measure before you change it — mandatory
+
+When I say something is slow or heavy, measure first and let the number pick the target. Never optimise on a hunch.
+
+Measure the baseline a visitor actually gets. My sites are low traffic, so the function is usually cold when someone arrives and a warm request is the exception. A warm-to-warm comparison on a quiet site hides whole seconds, and it can make a fix worth seconds look worth nothing.
+
+If the number says the thing I asked about is not the bottleneck, say so and name what is, before building anything. When I raise the same idea a third time I am describing a symptom I can see, so go and find its cause rather than explaining again why the idea will not work.
 
 ## Git identity
 
