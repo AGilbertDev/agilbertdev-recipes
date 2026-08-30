@@ -13,6 +13,16 @@ These are defaults for personal projects. Adjust per project when a project's ne
 - Define schema in Drizzle, derive validation with `drizzle-zod`.
 - Migrations with `drizzle-kit`.
 
+### Dynamic rows are translated in a `translations` table, never in the i18n files
+
+**Any table holding rows the user creates needs its names translated, and those translations live in a single `translations` table rather than in the locale JSON.** The i18n files carry interface copy, which ships with the app and is known at build time. A row the user invents at runtime has a name nobody can put in a locale file, so it needs somewhere in the database to hold one name per locale.
+
+One shared `translations` table rather than a name column per locale on every table, and rather than a separate translation table per entity. It holds the dynamic, non-interface strings for the whole app, keyed by which table and row the string belongs to, which field it is, and which locale it is in. Adding a translated entity later then costs no schema change at all, which is the same reason quotas are keyed by category id rather than bolted onto a category record.
+
+Keep the boundary clean. A string that exists because the interface says it, such as a button label, a heading or an error, belongs to i18n and never to this table. A string that exists because the user typed it belongs to this table and never to i18n. Nothing is duplicated across both.
+
+**Every form that creates such a row collects every supported locale at once, so the create screen shows a French input and an English input side by side rather than one input and a promise to translate later.** A row saved in one language only is a row that renders as a gap or as the wrong language for the other, and asking the user to come back and fill it in is the kind of half-finished state the no-invalid-states rule exists to prevent. This project is French first and English second, so the French input leads.
+
 ### A migration is for schema, not for data the seed owns
 
 Write a migration when the database structure changes. A table, a column, an index, a constraint, a type. Do not write one to rewrite rows that only exist because the dev seed put them there, because the seed already owns those rows and rebuilds them on the next run, so the migration duplicates work that is about to happen anyway and then sits in the history implying a structural change that never occurred.

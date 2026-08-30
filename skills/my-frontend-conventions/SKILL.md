@@ -21,6 +21,12 @@ Look up the official docs and explain the reasoning rather than guessing. When n
 - Prefer Nuxt UI primitives (`UButton`, `UCard`, `UForm`, `UModal`, `UTable`, `UInput`, and so on) before building custom.
 - Vue 3 Composition API with `<script setup>`. Keep components small and composable; pull shared logic into composables.
 
+## Creating a row the user names
+
+A form that creates a row carrying a user-supplied name collects that name in **every supported locale at once**, so the screen shows a French field and an English field side by side rather than one field and a promise to translate later. French leads, since the app is French first.
+
+The names go to the `translations` table described in `my-backend-conventions`, never into the locale JSON files. Interface copy is i18n and ships with the app. A name the user invents at runtime is data and lives in the database. Do not let a component read one from the other.
+
 ## Data mutations and cache invalidation
 
 Always invalidate the client cache after a mutation. Any write that changes server state (a `$fetch` POST, PATCH, or DELETE) must be followed by refreshing whatever client-side cache reads that state, so the UI reflects the change without a full page reload.
