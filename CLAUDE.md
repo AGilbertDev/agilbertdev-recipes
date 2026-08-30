@@ -152,6 +152,10 @@ Short phrases over full paragraphs when we are working. This is about our conver
 
 ## Language (Québécois French)
 
+**French punctuation uses a real no-break space before `? ! : ;`, and that character is U+00A0.** Not U+202F, the narrow no-break space, and not a plain space. Write it into the locale file as the literal character rather than as an escape, since a JSON `\u00a0` renders correctly and then reads as a plain space to every grep, every diff and every reviewer, which is how one gets deleted by accident.
+
+**Check it with `grep -P '\x{00A0}'` and never with `grep -P '\xc2\xa0'`.** The byte-pair form looks right, because U+00A0 really is `c2 a0` in UTF-8, and it silently reports nothing when `grep` is a wrapper around `ugrep`, which reads those escapes as two codepoints in a UTF-8 locale rather than as two bytes. That is a confident false negative on exactly the check that is meant to catch a stripped character. Prove whichever form you use against a probe file holding a known U+00A0 before trusting its silence, and prefer a committed test asserting the rule over a command run by hand.
+
 All French copy is Québécois, never français de France. Follow my own usage. Write "dans mon temps libre" rather than "sur mon temps libre", treat "un stack" and "mon stack" as masculine, and use "outils" rather than "outillage". Colloquial Québécois fits my voice, for example "le fun à faire". Write what I would actually say, and never adjust toward France French.
 
 ## Running agents — mandatory
