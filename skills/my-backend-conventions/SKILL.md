@@ -21,6 +21,16 @@ Check who owns the rows before reaching for a migration. Dev and test data is se
 
 This matters most when a stored value is renamed or split. If a column is free text with no CHECK, enum, or foreign key, then new values are already storable and there is no DDL to write at all, so the only question left is who rewrites the existing rows. And when a rename splits one value into two, a backfill has to pick a side for a distinction the old rows never recorded, which writes a guess permanently into the history. Rewriting the seed avoids inventing that answer. If real user rows are affected and the mapping is genuinely unknowable, stop and ask rather than choosing for the user.
 
+### Migrations are additive and are never edited in place
+
+**A migration file is append-only once it exists. Every change to the schema is a new numbered file, never an edit to an old one.** This holds even when the old file has not been applied anywhere yet, and even when editing it would produce a tidier history, because "has this run somewhere" is a question about every database that has ever pointed at this repo rather than about the one on the desk right now.
+
+The reason is that a runner decides what to apply by comparing files against a ledger, and a ledger keyed on the filename cannot see that a file's contents changed. An edit to an already-applied file is skipped in silence, and the code then expects a schema the database does not have. A ledger storing a hash catches this, which is one of the real arguments for using the tool's own migrator rather than a bespoke runner.
+
+Additive also governs the SQL. Prefer adding a table, a column or an index over rewriting or removing one, and when something genuinely has to go, let the removal be its own file so it can be reasoned about on its own. A destructive statement is not forbidden and it is never bundled, so a `DROP COLUMN` rides alone rather than sharing a file with the additions around it.
+
+Two failures this rule was written from, both in one session. A migration was edited in place on the recorded basis that it had never been applied, which was true and which still left the assumption sitting in a comment where no future run could check it. And `drizzle-kit generate` was run in a project keeping no meta snapshot, so it read the entire existing schema as new and emitted a full `CREATE TABLE` for every table, which the runner then tried to apply over a live database. The first is a rule about files. The second is why the idempotency rule below is not optional.
+
 ### Migrations must be idempotent and crash-resistant
 
 Every migration must be safe to re-run and must complete even after a partial failure or a crash, so running it again always drives the schema to the target state no matter where a prior run stopped. Never write a migration that only works against one exact starting state.
