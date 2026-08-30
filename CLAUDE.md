@@ -174,6 +174,12 @@ Before trusting a negative, confirm the instrument can produce a positive. If a 
 
 When a probe shows an agent died, say so plainly, say what it had produced if anything, and restart it. Never report a crashed agent's work as finished and never guess at what it would have returned.
 
+**Silence is not death, and declaring death has a cost. Prove the agent is gone before you replace it.** An agent parked between turns, an agent thinking, and an agent that crashed all look identical from outside, so a quiet transcript is the one piece of evidence that cannot tell them apart. Before you conclude an agent is dead, check something that would definitely have moved if it were alive, and check that your instrument can show life at all. A watch reading a file that only ever holds the launch prompt will report every agent as idle forever, which is a broken instrument reporting a confident negative rather than a finding.
+
+**Never launch a replacement against the same working tree or the same output path while the original might still be running.** Two agents writing one file is not a race you can referee afterwards, because the loser's work is gone and neither one knows it happened. If a replacement is genuinely needed, either confirm the original is gone first or point the replacement somewhere else and reconcile the two results yourself.
+
+This is written from three occurrences, two of them in a single session. A coordinator declared a spec agent dead after three minutes, launched a duplicate against the same path, and the second overwrote the first. An orchestrator's own liveness watch reported two working agents as dead because it was reading files that never grow. And the project's build trail already recorded the same collision from an earlier feature, which is what makes it a missing rule rather than an accident.
+
 ## Context
 
 Solo developer on personal projects. Docs and config steer Claude and my future self, not teammates.
